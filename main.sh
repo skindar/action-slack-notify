@@ -26,10 +26,10 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
 fi
 
 # Google Auth
-echo $GOOGLE_APPLICATION_CREDENTIALS > /go/key.json
-export project=$(cat /go/key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
-export client_email=$(cat /go/key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
-gcloud auth activate-service-account $client_email --key-file=/go/key.json
+echo $GOOGLE_APPLICATION_CREDENTIALS > /github/home/key.json
+export project=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
+export client_email=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
+gcloud auth activate-service-account $client_email --key-file=/github/home/key.json
 export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
 echo $SLACK_WEBHOOK
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
