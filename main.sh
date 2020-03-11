@@ -25,13 +25,13 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
 	vault login -method=github token="$VAULT_GITHUB_TOKEN" > /dev/null
 fi
 
-# Googl Auth
-echo $GOOGLE_APPLICATION_CREDENTIALS > key.json
-export project=$(cat key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
-export client_email=$(cat key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
-gcloud auth activate-service-account $client_email --key-file=key.json
+# Google Auth
+echo $GOOGLE_APPLICATION_CREDENTIALS > /go/key.json
+export project=$(cat /go/key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
+export client_email=$(cat /go/key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
+gcloud auth activate-service-account $client_email --key-file=/go/key.json
 export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
-
+echo $SLACK_WEBHOOK
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
 	export SLACK_WEBHOOK=$(vault read -field=webhook secret/slack)
 fi

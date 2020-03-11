@@ -3,7 +3,6 @@
 #initialise secret
 
 # Check required env variables
-service_account_key=$1
 
 flag=0
 if [[ -z "$service_account_key" ]]; then
