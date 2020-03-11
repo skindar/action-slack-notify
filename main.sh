@@ -26,15 +26,15 @@ export SLACK_COLOR_FAILED="#ff0000"
 if [[ -z "$JOB_STATUS" ]]; then
     export SLACK_MESSAGE=$SLACK_MESSAGE_STARTED
 	export SLACK_COLOR=$SLACK_COLOR_STARTED else
-	if [ "$JOB_STATUS" = "Сancelled" ]; then
+	elif [ "$JOB_STATUS" = "Сancelled" ]; then
 	export SLACK_MESSAGE=$SLACK_MESSAGE_CANCELLED
 	export SLACK_COLOR=$SLACK_COLOR_CANCELLED fi
-	if [ "$JOB_STATUS" = "Success" ]; then
+	elif [ "$JOB_STATUS" = "Success" ]; then
 	export SLACK_MESSAGE=$SLACK_MESSAGE_SUCCESS
-	export SLACK_COLOR=$SLACK_COLOR_SUCCESS fi
-	if [ "$JOB_STATUS" = "Failed" ]; then
+	export SLACK_COLOR=$SLACK_COLOR_SUCCESS
+	elif [ "$JOB_STATUS" = "Failed" ]; then
 	export SLACK_MESSAGE=$SLACK_MESSAGE_FAILED
-	export SLACK_COLOR=$SLACK_COLOR_FAILED fi
+	export SLACK_COLOR=$SLACK_COLOR_FAILED
 fi
 
 
