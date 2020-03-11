@@ -1,9 +1,15 @@
 name: 'Slack Notify'
 description: 'This action will send a notification to Slack'
 author: 'rtCamp'
+inputs:
+  service_account_key:  
+    description: 'For google auth'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.service_account_key }}
 branding:
   icon: 'bell'
   color: 'yellow'
