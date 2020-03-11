@@ -12,9 +12,16 @@ export SLACK_MESSAGE_SUCCESS="$GITHUB_REPOSITORY build: Success :the_horns:"
 export SLACK_MESSAGE_STARTED="$GITHUB_REPOSITORY build: Started :clapper:"
 export SLACK_MESSAGE_CANCELLED="$GITHUB_REPOSITORY build: Cancelled: :eyes:"
 export SLACK_MESSAGE_FAILED="$GITHUB_REPOSITORY build: Failure: :boom:"
+export SLACK_COLOR_SUCCESS="#6aa84f"
+export SLACK_COLOR_STARTED="#0074D9"
+export SLACK_COLOR_CANCELLED="#cccccc"
+export SLACK_COLOR_FAILED="#ff0000"
+
 
 MSG=SLACK_MESSAGE_$SLACK_MESSAGE_TYPE
+MSG_COLOR=SLACK_COLOR_$SLACK_MESSAGE_TYPE
 export SLACK_MESSAGE=${!MSG}
+export SLACK_COLOR=${!MSG_COLOR} 
 
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
@@ -38,7 +45,7 @@ fi
 # Google Auth
 echo $GOOGLE_APPLICATION_CREDENTIALS > /github/home/key.json
 export project=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
-echo '::set-env name=GKE_PROJECT::$project'
+echo ::set-env name=GKE_PROJECT::$project
 export client_email=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
 gcloud auth activate-service-account $client_email --key-file=/github/home/key.json
 export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
