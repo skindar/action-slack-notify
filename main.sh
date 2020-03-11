@@ -26,15 +26,18 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
 fi
 
 # Googl Auth
-gcloud auth application-default login
-export SLACK_WEBHOOK=$(gcloud beta secrets versions access latest --secret="SLACK_WEBHOOK")
+echo $GOOGLE_APPLICATION_CREDENTIALS > key.json
+export project=$(cat key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
+export client_email=$(cat key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
+gcloud auth activate-service-account $client_email --key-file=key.json
+export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
 
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
 	export SLACK_WEBHOOK=$(vault read -field=webhook secret/slack)
 fi
 
 if [[ -f "$hosts_file" ]]; then
-	hostname=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.hostname")
+	hostname=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRNCH.hostname")
 	user=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.user")
 	export HOST_NAME="\`$user@$hostname\`"
 	export DEPLOY_PATH=$(cat "$hosts_file" | shyaml get-value "$GITHUB_BRANCH.deploy_path")
