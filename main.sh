@@ -18,10 +18,14 @@ export SLACK_COLOR_CANCELLED="#cccccc"
 export SLACK_COLOR_FAILED="#ff0000"
 
 
-MSG=SLACK_MESSAGE_$(echo $JOB_STATUS | tr a-z A-Z )
-MSG_COLOR=SLACK_COLOR_$(echo $JOB_STATUS | tr a-z A-Z )
-export SLACK_MESSAGE=${!MSG}
-export SLACK_COLOR=${!MSG_COLOR} 
+if [[ -z "$JOB_STATUS" ]]; then
+	export SLACK_MESSAGE=SLACK_MESSAGE_STARTED
+	export SLACK_COLOR=SLACK_COLOR_STARTED else
+	MSG=SLACK_MESSAGE_$(echo $JOB_STATUS | tr a-z A-Z )
+	MSG_COLOR=SLACK_COLOR_$(echo $JOB_STATUS | tr a-z A-Z )
+	export SLACK_MESSAGE=${!MSG}
+	export SLACK_COLOR=${!MSG_COLOR}
+fi
 
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
@@ -80,8 +84,8 @@ if [[ -n "$SITE_NAME" ]]; then
 fi
 
 
-if [[ -z "$SLACK_MESSAGE" ]]; then
-	export SLACK_MESSAGE="$COMMIT_MESSAGE"
-fi
+# if [[ -z "$SLACK_MESSAGE" ]]; then
+# 	export SLACK_MESSAGE="$COMMIT_MESSAGE"
+# fi
 
 slack-notify "$@"
