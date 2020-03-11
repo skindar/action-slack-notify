@@ -22,6 +22,18 @@ COPY --from=builder /go/bin/slack-notify /usr/bin/slack-notify
 
 ENV VAULT_VERSION 1.0.2
 
+RUN apk update \
+	&& apk upgrade \
+	&& apk add \
+	bash \
+	jq \
+	ca-certificates \
+	curl \
+	python \
+	py2-pip && \
+	pip install shyaml && \
+	rm -rf /var/cache/apk/*
+
 # Downloading gcloud package
 RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
 
@@ -32,17 +44,6 @@ RUN mkdir -p /usr/local/gcloud \
 
 # Adding the package path to local
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
-
-RUN apk update \
-	&& apk upgrade \
-	&& apk add \
-	bash \
-	jq \
-	ca-certificates \
-	python \
-	py2-pip && \
-	pip install shyaml && \
-	rm -rf /var/cache/apk/*
 
 # Setup Vault
 RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \

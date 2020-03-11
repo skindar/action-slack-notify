@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+export GOOGLE_APPLICATION_CREDENTIALS=$service_account_key
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 export SLACK_ICON=${SLACK_ICON:-"https://avatars0.githubusercontent.com/u/43742164"}
 export SLACK_USERNAME=${SLACK_USERNAME:-"rtBot"}
@@ -24,6 +24,10 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
 	unset VAULT_TOKEN
 	vault login -method=github token="$VAULT_GITHUB_TOKEN" > /dev/null
 fi
+
+# Googl Auth
+gcloud auth application-default login
+export SLACK_WEBHOOK=$(gcloud beta secrets versions access latest --secret="SLACK_WEBHOOK")
 
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
 	export SLACK_WEBHOOK=$(vault read -field=webhook secret/slack)
