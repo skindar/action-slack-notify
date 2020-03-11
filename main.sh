@@ -23,6 +23,11 @@ MSG_COLOR=SLACK_COLOR_$SLACK_MESSAGE_TYPE
 export SLACK_MESSAGE=${!MSG}
 export SLACK_COLOR=${!MSG_COLOR} 
 
+if [[ -z "$JOB_STATUS" ]]; then
+    export SLACK_MESSAGE=$SLACK_MESSAGE_STARTED
+	export SLACK_COLOR=$SLACK_COLOR_STARTED
+fi
+
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 
@@ -50,7 +55,7 @@ export client_email=$(cat /github/home/key.json | python -c "import sys, json; p
 gcloud auth activate-service-account $client_email --key-file=/github/home/key.json
 export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
 
-echo $JOB_STATUS
+
 
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
 	export SLACK_WEBHOOK=$(vault read -field=webhook secret/slack)

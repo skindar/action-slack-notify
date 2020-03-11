@@ -9,9 +9,6 @@ if [[ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]]; then
     flag=1
 fi
 
-if [[ -z "$SLACK_MESSAGE_TYPE" ]]; then
-    flag=1
-fi
 
 if [[ "$flag" -eq 1 ]]; then
     printf "[\e[0;31mERROR\e[0m] requirement ENV  \`$missing_secret\` is missing. Please add it to this action for proper execution.\nRefer https://github.com/rtCamp/action-slack-notify for more information.\n"
