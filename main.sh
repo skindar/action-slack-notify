@@ -5,6 +5,7 @@ export SLACK_USERNAME=${SLACK_USERNAME:-"GH Action - Build"}
 export CI_SCRIPT_OPTIONS="ci_script_options"
 export SLACK_TITLE=${SLACK_TITLE:-"Message"}
 export COMMIT_MESSAGE=$(cat "/github/workflow/event.json" | jq .commits | jq '.[0].message' -r)
+export SLACK_TITLE=$_ENV
 # slack messages
 
 export SLACK_MESSAGE_SUCCESS="$GITHUB_REPOSITORY build: Success :the_horns:"
