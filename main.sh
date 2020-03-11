@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-export GOOGLE_APPLICATION_CREDENTIALS=$service_account_key
 export GITHUB_BRANCH=${GITHUB_REF##*heads/}
 export SLACK_ICON=${SLACK_ICON:-"https://octodex.github.com/images/jetpacktocat.png"}
 export SLACK_USERNAME=${SLACK_USERNAME:-"GH Action - Build"}
@@ -8,10 +7,14 @@ export SLACK_TITLE=${SLACK_TITLE:-"Message"}
 export COMMIT_MESSAGE=$(cat "/github/workflow/event.json" | jq .commits | jq '.[0].message' -r)
 # slack messages
 
-export SLACK_MESSAGE_SUCCESS=$GITHUB_REPOSITORY build: Success :the_horns:
-export SLACK_MESSAGE_STARTED=$GITHUB_REPOSITORY build: Started :clapper:
-export SLACK_MESSAGE_CANCELLED=$GITHUB_REPOSITORY build: Cancelled: :eyes:
-export SLACK_MESSAGE_FAILED=$GITHUB_REPOSITORY build: Failure: :boom:
+export SLACK_MESSAGE_SUCCESS="$GITHUB_REPOSITORY build: Success :the_horns:"
+export SLACK_MESSAGE_STARTED="$GITHUB_REPOSITORY build: Started :clapper:"
+export SLACK_MESSAGE_CANCELLED="$GITHUB_REPOSITORY build: Cancelled: :eyes:"
+export SLACK_MESSAGE_FAILED="$GITHUB_REPOSITORY build: Failure: :boom:"
+
+MSG=SLACK_MESSAGE_$SLACK_MESSAGE_TYPE
+export SLACK_MESSAGE=${!MSG}
+
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 
