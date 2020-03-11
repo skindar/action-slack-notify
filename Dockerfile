@@ -46,10 +46,10 @@ RUN mkdir -p /usr/local/gcloud \
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 # Setup Vault
-RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
-	unzip vault_${VAULT_VERSION}_linux_amd64.zip && \
-	rm vault_${VAULT_VERSION}_linux_amd64.zip && \
-	mv vault /usr/local/bin/vault
+# RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+# 	unzip vault_${VAULT_VERSION}_linux_amd64.zip && \
+# 	rm vault_${VAULT_VERSION}_linux_amd64.zip && \
+# 	mv vault /usr/local/bin/vault
 
 # fix the missing dependency - https://stackoverflow.com/a/35613430
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2

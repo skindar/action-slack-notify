@@ -5,7 +5,7 @@
 # Check required env variables
 
 flag=0
-if [[ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]]; then
+if [[ -z "$GCP_CREDENTIALS" ]]; then
     flag=1
 fi
 

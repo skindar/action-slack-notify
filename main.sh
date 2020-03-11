@@ -48,7 +48,7 @@ if [[ -n "$VAULT_GITHUB_TOKEN" ]]; then
 fi
 
 # Google Auth
-echo $GOOGLE_APPLICATION_CREDENTIALS > /github/home/key.json
+echo $GCP_CREDENTIALS > /github/home/key.json
 export project=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['project_id']")
 echo ::set-env name=GKE_PROJECT::$project
 export client_email=$(cat /github/home/key.json | python -c "import sys, json; print json.load(sys.stdin)['client_email']")
