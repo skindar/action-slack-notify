@@ -8,7 +8,6 @@ flag=0
 if [[ -z "$service_account_key" ]]; then
     flag=1
 fi
-echo $flag
 
 if [[ "$flag" -eq 1 ]]; then
     printf "[\e[0;31mERROR\e[0m] Secret \`$missing_secret\` is missing. Please add it to this action for proper execution.\nRefer https://github.com/rtCamp/action-slack-notify for more information.\n"
