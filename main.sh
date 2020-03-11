@@ -51,7 +51,6 @@ gcloud auth activate-service-account $client_email --key-file=/github/home/key.j
 export SLACK_WEBHOOK=$(gcloud secrets versions access latest --secret="SLACK_WEBHOOK" --project $project)
 
 echo $JOB_STATUS
-exit 1
 
 if [[ -n "$VAULT_GITHUB_TOKEN" ]] || [[ -n "$VAULT_TOKEN" ]]; then
 	export SLACK_WEBHOOK=$(vault read -field=webhook secret/slack)
