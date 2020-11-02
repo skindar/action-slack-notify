@@ -21,6 +21,8 @@ const (
 	EnvSiteName       = "SITE_NAME"
 	EnvHostName       = "HOST_NAME"
 	EnvDepolyPath     = "DEPLOY_PATH"
+	EnvCoverageTitle  = "COVERAGE_TITLE"
+	EnvCoverageURL    = "COVERAGE_URL"
 )
 
 type Webhook struct {
@@ -76,6 +78,11 @@ func main() {
 		{
 			Title: "Actions URL",
 			Value: "https://github.com/" + os.Getenv("GITHUB_REPOSITORY") + "/commit/" + os.Getenv("GITHUB_SHA") + "/checks",
+			Short: false,
+		},
+		{
+			Title: envOr(EnvCoverageTitle),
+			Value: envOr(EnvCoverageURL),
 			Short: false,
 		},
 		{

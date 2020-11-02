@@ -28,6 +28,10 @@ else
 	export SLACK_COLOR=${!MSG_COLOR}
 fi
 
+if [[ "$COVERAGE_URL" ]]; then
+    export COVERAGE_TITLE="Test coverage URL"
+    export COVERAGE_URL
+fi
 
 hosts_file="$GITHUB_WORKSPACE/.github/hosts.yml"
 
